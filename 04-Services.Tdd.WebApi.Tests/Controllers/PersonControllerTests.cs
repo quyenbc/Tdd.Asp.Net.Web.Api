@@ -30,7 +30,9 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
     [TestFixture]
     public class PersonControllerTests : InMemoryDatabaseTests
     {
-
+        /// <summary>
+        /// POST => PostAsJsonAsync
+        /// </summary>
         [Test]
         public void Create_DummyObject_ResponseIsNotFound()
         {
@@ -39,7 +41,7 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
             //arrange
             using (var client = TestHttpClientFactory.Create())
             {
-                var personApiUri = new Uri(client.BaseAddress, "api/" + nameof(Person));
+                var personApiUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/create");
 
                 //act
                 var response = client.PostAsJsonAsync(personApiUri, json).Result;
@@ -49,6 +51,9 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
             }
         }
 
+        /// <summary>
+        /// POST => PostAsJsonAsync
+        /// </summary>
         [Test]
         public void Create_Person_ResponseIsSuccess()
         {
@@ -57,7 +62,7 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
             //arrange
             using (var client = TestHttpClientFactory.Create())
             {
-                var personApiUri = new Uri(client.BaseAddress, "api/" + nameof(Person));
+                var personApiUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/Create" );
 
                 //act
                 var response = client.PostAsJsonAsync(personApiUri, person).Result;
@@ -71,6 +76,9 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
             }
         }
 
+        /// <summary>
+        /// POST => PostAsJsonAsync
+        /// </summary>
         [Test]
         public void Create_XmlPerson_ResponseIsSuccess()
         {
@@ -94,10 +102,9 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
 
             }
         }
-
-
+        
         /// <summary>
-        /// 
+        /// GET => GetAsync
         /// </summary>
         [Test]
         public void Read_EmptyRequest_ResponseIsSuccess()
@@ -106,7 +113,7 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
             using (var client = TestHttpClientFactory.Create())
             {
                 //act
-                var newUri = new Uri(client.BaseAddress, "api/");
+                var newUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/Read/");
 
                 var response = client.GetAsync(newUri).Result;
 
@@ -114,7 +121,10 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
                 Assert.That(response.IsSuccessStatusCode, Is.True, "response:" + response);
             }
         }
-
+        
+        /// <summary>
+        /// GET => GetAsync
+        /// </summary>
         [Test]
         public void Read_Person_ResponseIsSuccess()
         {
@@ -125,7 +135,7 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
 
             using (var client = TestHttpClientFactory.Create())
             {
-                var personApiGetByIdUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/{person.Id}");
+                var personApiGetByIdUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/Read/{person.Id}");
 
                 //act
                 var responseFromGet = client.GetAsync(personApiGetByIdUri).Result;
@@ -137,6 +147,9 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
             }
         }
 
+        /// <summary>
+        /// GET => GetAsync
+        /// </summary>
         [Test]
         public void Read_Persons_ResponseIsSuccess()
         {
@@ -152,7 +165,7 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
 
             using (var client = TestHttpClientFactory.Create())
             {
-                var personApiUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}");
+                var personApiUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/Read");
 
                 //act
                 var responseFromGet = client.GetAsync(personApiUri).Result;
@@ -163,6 +176,28 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
                 Assert.That(responseFromGet.IsSuccessStatusCode, Is.True, "response:" + responseFromGet);
             }
         }
+
+        /// <summary>
+        /// GET => GetAsync
+        /// </summary>
+        [Test]
+        public void Seed_Persons_ResponseIsSuccess()
+        {
+            //arrange
+            using (var client = TestHttpClientFactory.Create())
+            {
+                var personApiUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/Seed");
+
+                //act
+                var responseFromGet = client.GetAsync(personApiUri).Result;
+                var returnPersonsFromGet = responseFromGet.Content.ReadAsAsync<List<Person>>().Result;
+
+                //assert
+                Assert.That(returnPersonsFromGet.Count(), Is.EqualTo(100));
+                Assert.That(responseFromGet.IsSuccessStatusCode, Is.True, "response:" + responseFromGet);
+            }
+        }
+
         /// <summary>
         /// PUT => PutAsJsonAsync
         /// </summary>
@@ -230,7 +265,7 @@ namespace _04_Services.Tdd.WebApi.Tests.Controllers
 
             using (var client = TestHttpClientFactory.Create())
             {
-                var personApiGetByIdUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/{person.Id}");
+                var personApiGetByIdUri = new Uri(client.BaseAddress, $"api/{nameof(Person)}/delete/{person.Id}");
 
                 //act
                 var response = client.DeleteAsync(personApiGetByIdUri).Result;

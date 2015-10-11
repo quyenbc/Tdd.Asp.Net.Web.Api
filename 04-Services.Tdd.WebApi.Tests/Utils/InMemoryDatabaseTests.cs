@@ -7,7 +7,7 @@ namespace _04_Services.Tdd.WebApi.Tests.Utils
     public class InMemoryDatabaseTests
     {
         /// <summary>
-        ///     delete all persone before we start to work with context
+        ///     delete all persons before we start to work with context
         /// </summary>
         [SetUp]
         public void CleanDB()

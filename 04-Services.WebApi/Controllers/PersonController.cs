@@ -50,7 +50,7 @@ namespace _04_Services.WebApi.Controllers
         /// </summary>
         /// <returns>Person list</returns>
         [HttpGet]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Read()
         {
             using (var dbContext = new PersonContext())
             {
@@ -63,7 +63,7 @@ namespace _04_Services.WebApi.Controllers
         /// </summary>
         /// <returns>Person by Id</returns>
         [HttpGet]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage Read(int id)
         {
             using (var dbContext = new PersonContext())
             {
@@ -127,6 +127,21 @@ namespace _04_Services.WebApi.Controllers
                 dbContext.SaveChanges();
                 
                 return this.Request.CreateResponse(HttpStatusCode.OK);
+            }
+        }
+
+        /// <summary>
+        /// cRud - generate the Persons save to Db and return
+        /// </summary>
+        /// <returns>Person list</returns>
+        [HttpGet]
+        public HttpResponseMessage Seed()
+        {
+            using (var dbContext = new PersonContext())
+            {
+                dbContext.Seed();
+                dbContext.SaveChanges();
+                return this.Request.CreateResponse(HttpStatusCode.OK, dbContext.Persons.ToList());
             }
         }
     }
